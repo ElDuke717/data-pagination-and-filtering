@@ -79,13 +79,15 @@ function addPagination(list) {
    console.log(document.querySelector('.link-list button'));
    // create an event listener on the `link-list` element
    linkList.addEventListener("click", (e) => {
+      // if the click target is a button:
+       // remove the "active" class from the previous button
       if (e.target.tagName === "BUTTON") {
          e.target.querySelector('.active').className = "";
-      }
-   )
+         e.target.querySelector('.link-list button').className = "active";
+      } {}
+   )}
 
-     // if the click target is a button:
-       // remove the "active" class from the previous button
+     
        // add the active class to the clicked button
        // call the showPage function passing the `list` parameter and page to display as arguments
  }
