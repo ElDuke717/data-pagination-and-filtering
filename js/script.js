@@ -29,7 +29,7 @@ function showPage(list, page){
     // loop over the length of the `list` parameter
    for (let i = 0; i < list.length; i++) {
      // inside the loop create a conditional to display the proper students
-      if ( i >= startIndex, i < endIndex) {
+      if ( i >= startIndex && i < endIndex) {
          // inside the conditional:
           // create the elements needed to display the student information
          const studentItem =  
@@ -43,7 +43,7 @@ function showPage(list, page){
                   <span class="date">${data[i].registered.date}</span>
                </div>
             </li>
-         `
+         `;
          studentList.insertAdjacentHTML("beforeend", studentItem);
          // insert the above elements
       }
@@ -55,8 +55,6 @@ function showPage(list, page){
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
-
-
 function addPagination(list) {
    // create a variable to calculate the number of pages needed
    const numOfPages = Math.ceil(list.length / 9);  
@@ -73,28 +71,51 @@ function addPagination(list) {
       </li>`;
       // insert the above elements
       linkList.insertAdjacentHTML("beforeend", button);
+      // give the first pagination button a class of "active", element is selected using the
+      //descendant selector between the .link-list class and button tagname. 
       document.querySelector('.link-list button').className = "active";
-      // give the first pagination button a class of "active"
    }
-   console.log(document.querySelector('.link-list button'));
+
    // create an event listener on the `link-list` element
    linkList.addEventListener("click", (e) => {
       // if the click target is a button:
-       // remove the "active" class from the previous button
       if (e.target.tagName === "BUTTON") {
-         e.target.querySelector('.active').className = "";
-         e.target.querySelector('.link-list button').className = "active";
-      } {}
-   )}
-
-     
-       // add the active class to the clicked button
-       // call the showPage function passing the `list` parameter and page to display as arguments
+         // remove the "active" class from the previous button
+         document.querySelector('.active').className = "";
+         // add the active class to the clicked button
+         e.target.className = "active";
+         // call the showPage function passing the `list` parameter and page to display as arguments
+         showPage(list, e.target.textContent);
+      } 
+   });      
  }
  
+ function searchPeople() {
+   //This variable is set based on what's entered into the search input box.
+   const searchInput = document.getElementById("search").value;
+   console.log(searchInput);
+   
+   //This variable pulls up a nodeList that is used to access the names taken from the randomNames API.
+   const name = document.querySelectorAll(".name");
+   console.log(name);    
 
+   //Sets a variable for the cards for the search
+   const studentItem = document.querySelectorAll(".student-item");
+   console.log(studentItem);
+  
+   //This loop includes logic that looks for input from the captions and matches it up with the searchInput.
+   for (let i = 0; i < name.length; i++) {
+   if (name[i].innerHTML.toLowerCase().includes(searchInput.toLowerCase()) ) {
+   studentItem[i].style.display = "";
+   } else {
+   studentItem[i].style.display = "none";
+      }
+   }
+   
+}
 
 
 // Call functions 
 showPage(data, 1);
 addPagination(data);
+console.log(searchPeople());
