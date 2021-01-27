@@ -7,7 +7,9 @@ FSJS Project 2 - Data Pagination and Filtering
 //searchInput is set based on what's entered into the search input box.
 //studentList selects the unordered list where the HTML from the data array is dynamically inserted.
 //studentItem is where the list item from the studentList item from the dynamic HTML is added.
-//itemsPerPage sets the number of student cards to place on each page and determine how many pages to add via addPagination
+//linkList selects the ul element with a class of `link-list` and is used by the addPagination function eventListener.
+//searchButton selects the button used by the searchPeople function
+//itemsPerPage sets the number of student cards to place on each page and how many pages to add via addPagination
 const searchInput = document.getElementById("search").value;
 const studentList = document.querySelector('.student-list');
 const studentItem = document.querySelectorAll(".student-item");
@@ -16,23 +18,23 @@ const searchButton = document.querySelector("button");
 const itemsPerPage = 9;
 
 /*
-The showPage function will insert/append the elements needed to display a "page" of nine students
+The showPage function will insert/append the elements needed to display a "page" of nine student cards.
 */
 
 function showPage(list, page){
-   //the list parameter is used to hold the data from the data array, 
-   //the page parameter determines what page the display starts on.
-   //create two variables which will represent the index for the first and last student on the page
+   //the list parameter passes an array into the function, 
+   //the page parameter determines what page the display starts on e.g. 1 = page 1.
+   //startIndex provides an index number for the for loop that determines how many cards to display on the page.
+   //endIndex provides an index that determines the last card to add to the page.
    const startIndex = (page * itemsPerPage) - itemsPerPage;
    const endIndex = page * itemsPerPage;
-   // set the innerText property of studentList to empty to an empty string to clear it. 
+   //studentList is set to an empty string to clear it so that cards can be dynamically added to it. 
    studentList.innerText = "";
-    // loop over the length of the `list` parameter
+   // This loops over the length of the `list` parameter and adds student cards until it reaches endIndex.
    for (let i = 0; i < list.length; i++) {
-     // inside the loop create a conditional to display the proper students
+     // This conditional determines when the page begins and ends.
       if ( i >= startIndex && i < endIndex) {
-         // inside the conditional:
-          // create the elements needed to display the student information
+          //This template literal creates the elements needed to display the student information cards.
          const studentItem =  
          ` <li class="student-item cf">
                <div class="student-details">
@@ -46,63 +48,56 @@ function showPage(list, page){
             </li>
          `;
          studentList.insertAdjacentHTML("beforeend", studentItem);
-         // insert the above elements
+         //This inserts the above elements from studentItem into studentList.
       } 
    } 
 }
 
-
 /*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
+The `addPagination` function creates and inserts/appends the elements needed for the pagination buttons
 */
 function addPagination(list) {
-   // numOfPages to calculates the number of pages needed
+   //list parameter is an array
+   //numOfPages calculates the number of pages needed based on the length of the array.
    const numOfPages = Math.ceil(list.length / itemsPerPage);  
-   // linklist selects the element with a class of `link-list` and assign it to a variable
-   
-   // set the innerHTML property of the variable you just created to an empty string
+   // inkList is set to an empty string so that items can be added to it.
    linkList.innerHTML=""
-   // loop over the number of pages needed
+   //This loops over the number of pages needed and determines the number of pagination buttons to add based on
+   //the length of the array passed into the function.
    for (let i = 1; i <= numOfPages; i++) {
-     // create the elements needed to display the pagination button
+     //button provides the HTML needed to display the pagination button
       const button = 
       `<li>
             <button type="button">${[i]}</button>
       </li>`;
-      // insert the above elements
+      //The buttons are inserted in the link-list unordered list.
       linkList.insertAdjacentHTML("beforeend", button);
-      // give the first pagination button a class of "active", element is selected using the
-      //descendant selector between the .link-list class and button tagname. 
+      //The first pagination button is set to a class of "active", using the descendant selector between the 
+      //.link-list class and button tagname. 
       document.querySelector('.link-list button').className = "active";
    }
-
-   // create an event listener on the `link-list` element
+   //linkList event listener on the `link-list` element allows user to click on the pagination button.
    linkList.addEventListener("click", (e) => {
-      // if the click target is a button:
+      //if the click target is a button:
       if (e.target.tagName === "BUTTON") {
-         // remove the "active" class from the previous button
+         //remove the "active" class from the previous button
          document.querySelector('.active').className = "";
-         // add the active class to the clicked button
+         //add the active class to the clicked button
          e.target.className = "active";
-         // call the showPage function passing the `list` parameter and page to display as arguments
+         //call the showPage function passing the `list` parameter and page to display as arguments
          showPage(list, e.target.textContent);
       } 
    });      
  }
  
-// Call functions - conditional statment in place to only run showPage and addPagination if the search field is blank.
-
-showPage(data, 1);
-addPagination(data);
-
-
-//searchPeople has to pull object data for each student from the entire list of objects contained in data.  showPage students are limited to groups of 9. 
+//searchPeople has to pull object data for each student from the entire list of objects contained in data.  
+//showPage students are limited to groups of 9. 
 searchButton.addEventListener("click", (e) => {
    const searchInput = document.getElementById("search").value;
    //namesArr creates an empty array to hold the result of the for loop that uses the searchInput.
    const namesArr = [];
-   //This loop matches the search entry letters with the letters from the names in data, then .
+   //This loop matches the search entry letters with the letters from the first and last names in data, then 
+   //pushes them to namesArr.  namesArr is then passed into showPage and addPagination to show the results of the search.
    for (let i = 0; i < data.length; i++) {
       if (data[i].name.first.toLowerCase().includes(searchInput.toLowerCase()) || 
       data[i].name.last.toLowerCase().includes(searchInput.toLowerCase())) {
@@ -111,16 +106,26 @@ searchButton.addEventListener("click", (e) => {
          addPagination(namesArr);
        } 
    }
+   //conditional that determines if no results should be shown if the namesArr is empty. 
    if (namesArr.length === 0) {
+   //HTML is added via template literal to show that no results were found from the search. 
       studentList.innerHTML = 
          `<li class="student-item cf">
             <div class="no-results">
                   <h3>No Results Found</h3>
-               </div>
+            </div>
          </li>`;
       linkList.innerHTML="";   
    }
 });
+
+ //Call functions
+
+showPage(data, 1);
+addPagination(data);
+
+
+
 
 
 
