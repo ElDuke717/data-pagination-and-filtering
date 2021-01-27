@@ -115,8 +115,14 @@ searchButton.addEventListener("click", (e) => {
       if (names[i].first.toLowerCase().includes(searchInput.toLowerCase()) || names[i].last.toLowerCase().includes(searchInput.toLowerCase())) {
          const name = `${data[i].name.title} ${data[i].name.first} ${data[i].name.last}`;
          console.log(name);
+         console.log(data[i].name);
+         console.log(data[i]);
+         const chosen = data[i];
+         showPage(chosen);
 
        }
    }
 });
+
+
 
