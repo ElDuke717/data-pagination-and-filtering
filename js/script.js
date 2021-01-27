@@ -118,7 +118,8 @@ searchButton.addEventListener("click", (e) => {
          console.log(data[i].name);
          console.log(data[i]);
          const chosen = data[i];
-         showPage(chosen);
+         namesArr.push(chosen)
+         showPage(namesArr, 1);
 
        }
    }
