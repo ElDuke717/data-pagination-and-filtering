@@ -113,13 +113,10 @@ searchButton.addEventListener("click", (e) => {
    //This loop matches the search entry letters with the letters from the names in data, then .
    for (let i = 0; i < data.length; i++) {
       if (names[i].first.toLowerCase().includes(searchInput.toLowerCase()) || names[i].last.toLowerCase().includes(searchInput.toLowerCase())) {
-         const name = `${data[i].name.title} ${data[i].name.first} ${data[i].name.last}`;
-         console.log(name);
-         console.log(data[i].name);
-         console.log(data[i]);
-         const chosen = data[i];
-         namesArr.push(chosen)
+         const chosenName = data[i];
+         namesArr.push(chosenName)
          showPage(namesArr, 1);
+         addPagination(namesArr);
 
        }
    }
