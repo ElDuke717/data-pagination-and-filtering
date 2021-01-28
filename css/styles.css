@@ -77,7 +77,24 @@ header h2 {
   width: 25px;
 }
 
+.showSearch-button {
+  cursor: pointer;
+  width: 200px;
+  border-radius: 4px;
+  border: 1px solid #1e90ff;
+  padding: 10px;
+  font-size: 1em;
+  background-color: #1e90ff;
+  color: #fff;
+  margin: 20px;
+}
 
+.showSearch-button:hover {
+  background-color: #fff;
+  color: #1e90ff;
+  font-weight: 100;
+  transition: 0.5s ease-in-out;
+}
 
 .student-list {
   display: grid;

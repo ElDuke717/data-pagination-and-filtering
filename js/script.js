@@ -9,15 +9,18 @@ FSJS Project 2 - Data Pagination and Filtering
    @const studentList selects the unordered list where the HTML from the data array is dynamically inserted.
    @const studentItem is where the list item from the studentList item from the dynamic HTML is added.
    @const linkList selects the ul element with a class of `link-list` and is used by the addPagination function eventListener.
-   @const searchButton selects the button used by the searchPeople function
+   @const showSearch selects the div where the search for showSearchButton field is dynamically added 
+   @const showSearchButton selects the button used by the showSeachButton eventListener.
    @const itemsPerPage sets the number of student cards to place on each page and how many pages to add via addPagination 
 */
 
-const searchInput = document.getElementById("search").value;
+// const searchInput = document.getElementById("search").value;
 const studentList = document.querySelector('.student-list');
 const studentItem = document.querySelectorAll(".student-item");
 const linkList = document.querySelector('.link-list');
-const searchButton = document.querySelector("button");
+const showSearch = document.querySelector('.showSearch');
+const showSearchButton = document.querySelector('.showSearch-button');
+
 const itemsPerPage = 9;
 
 /** 
@@ -93,35 +96,48 @@ function addPagination(list) {
       } 
    });      
  }
- 
+
+ showSearchButton.addEventListener("click", () => {
+    const searchField = 
+    `<label for="search" class="student-search">
+      <input id="search" placeholder="Search by name...">
+      <button class="searchButton" type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+     </label>`
+    showSearch.insertAdjacentHTML("beforeend", searchField);
+    /** Selects the search button that is revealed after the user clicks on the search button */
+    const searchButton = document.querySelector(".searchButton");
+    /**Hides the search button after it's clicked. */
+    showSearchButton.style.visibility = 'hidden';
 /** searchPeople has to pull object data for each student from the entire list of objects contained in data.  
 showPage students are limited to groups of 9. */
-searchButton.addEventListener("click", () => {
-   const searchInput = document.getElementById("search").value;
-   /** namesArr creates an empty array to hold the result of the for loop that uses the searchInput. */
-   const namesArr = [];
-   /** This loop matches the search entry letters with the letters from the first and last names in data, then 
-   pushes them to namesArr.  namesArr is then passed into showPage and addPagination to show the results of the search. */
-   for (let i = 0; i < data.length; i++) {
-      if (data[i].name.first.toLowerCase().includes(searchInput.toLowerCase()) || 
-      data[i].name.last.toLowerCase().includes(searchInput.toLowerCase())) {
-         namesArr.push(data[i]);
-         showPage(namesArr, 1);
-         addPagination(namesArr);
-       } 
-   }
-   /** conditional that determines if no results should be shown if the namesArr is empty. */
-   if (namesArr.length === 0) {
-   /** HTML is added via template literal to show that no results were found from the search. */
-      studentList.innerHTML = 
-         `<li class="student-item cf">
-            <div class="no-results">
-                  <h3>No Results Found</h3>
-            </div>
-         </li>`;
-      linkList.innerHTML="";   
-   }
+   searchButton.addEventListener("click", () => {
+      const searchInput = document.getElementById("search").value;
+      /** namesArr creates an empty array to hold the result of the for loop that uses the searchInput. */
+      const namesArr = [];
+      /** This loop matches the search entry letters with the letters from the first and last names in data, then 
+      pushes them to namesArr.  namesArr is then passed into showPage and addPagination to show the results of the search. */
+      for (let i = 0; i < data.length; i++) {
+         if (data[i].name.first.toLowerCase().includes(searchInput.toLowerCase()) || 
+         data[i].name.last.toLowerCase().includes(searchInput.toLowerCase())) {
+            namesArr.push(data[i]);
+            showPage(namesArr, 1);
+            addPagination(namesArr);
+         } 
+      }
+      /** conditional that determines if no results should be shown if the namesArr is empty. */
+      if (namesArr.length === 0) {
+      /** HTML is added via template literal to show that no results were found from the search. */
+         studentList.innerHTML = 
+            `<li class="student-item cf">
+               <div class="no-results">
+                     <h3>No Results Found</h3>
+               </div>
+            </li>`;
+         linkList.innerHTML="";   
+      }
+   });
 });
+
 
  /** Call functions */
 
